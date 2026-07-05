@@ -8,7 +8,7 @@ with open("/app/access.log") as f:
         line = line.strip()
         if not line:
             continue
-        total += 1
+        total = total + 1
         ips.add(line.split()[0])
         m = re.search(r'"(?:GET|POST|PUT|DELETE|HEAD|PATCH) (\S+) ', line)
         if m:
@@ -17,7 +17,7 @@ with open("/app/access.log") as f:
 with open("/app/report.json", "w") as out:
     json.dump(
         {
-            "total_requests": total + 1,  # BUG INJECTED: off-by-one to break verifier
+            "total_requests": total,
             "unique_ips": len(ips),
             "top_path": paths.most_common(1)[0][0],
         },
